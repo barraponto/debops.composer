@@ -7,7 +7,6 @@
     dest: '{{ composer_bin_path }}'
     force: true
     mode: '0755'
-  creates: '{{ composer_bin_path }}'
 
 - name: Set up system-wide composer home
   file:
@@ -31,3 +30,11 @@
     {{ composer_bin_path }} require {{ item.name }}:{{ item.release|default("@stable") }} 
     --no-progress --working-dir {{ composer_system_home }}
   with_items: composer_system_packages
+
+- name: Fix permission for system-wide composer packages files
+  shell: >
+    find {{ composer_system_home }} -perm 640 -exec chmod 644 {} \;
+
+- name: Fix permission for system-wide composer packages directories and binaries
+  shell: >
+    find {{ composer_system_home }} -perm 750 -exec chmod 755 {} \;
