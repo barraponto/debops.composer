@@ -6,6 +6,19 @@
 #    :local:
 #
 
+
+# .. envvar:: composer_dependencies
+#
+# Whether to install composer dependencies
+composer_dependencies: true
+
+
+# .. envvar:: composer_php5_packages
+#
+# Whether to install composer php5_packages
+composer_php5_packages: [ 'php5-cli' ]
+
+
 # .. envvar:: composer_version
 #
 # Composer version, defaults to latest
@@ -22,6 +35,12 @@ composer_system_level: '/usr/local'
 #
 # Composer system_home, defaults to latest
 composer_system_home: '{{ composer_system_level }}/lib/composer'
+
+
+# .. envvar:: composer_system_bin_dir
+#
+# Composer bin_dir to hold composer packages binaries
+composer_system_bin_dir: '{{ composer_system_level }}/bin'
 
 
 # .. envvar:: composer_bin_path
