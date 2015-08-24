@@ -1,0 +1,24 @@
+---
+# tasks file for debops.composer
+
+- name: Download composer.phar
+  get_url:
+    url: '{{ composer_url  }}'
+    dest: '{{ composer_bin_path }}'
+    force: true
+    mode: '0755'
+
+- name: Set up system-wide composer home
+  file:
+    path: '{{ composer_system_home }}'
+    state: 'directory'
+    mode: '0755'
+
+- name: Set up composer bin-dir
+  shell: '{{ composer_bin_path }} global config bin-dir {{ composer_system_bin_dir }} --working-dir {{ composer_system_home }}'
+
+- name: Install system-wide composer packages
+  composer:
+    command: 'global require {{ item }}'
+    working_dir: '{{ composer_system_home }}'
+  with_items: composer_system_packages
