@@ -27,26 +27,26 @@ composer_version: ''
 
 # .. envvar:: composer_system_level
 #
-# Composer system_level, i.e. /usr/local, /opt or ~/.local
+# Composer system_level, i.e. /usr/local, ~/.local or even ~/bin
 composer_system_level: '/usr/local'
-
-
-# .. envvar:: composer_system_home
-#
-# Composer system_home, defaults to latest
-composer_system_home: '{{ composer_system_level }}/lib/composer'
-
-
-# .. envvar:: composer_system_bin_dir
-#
-# Composer bin_dir to hold composer packages binaries
-composer_system_bin_dir: '{{ composer_system_level }}/bin'
 
 
 # .. envvar:: composer_bin_path
 #
-# Composer bin_path, defaults to /usr/loca/bin/composer
+# Composer bin_path, defaults to /usr/local/bin/composer
 composer_bin_path: '{{ composer_system_level }}/bin/composer'
+
+
+# .. envvar:: composer_user
+#
+# Composer bin_path, defaults to /usr/local/bin/composer
+composer_user: ''
+
+
+# .. envvar:: composer_bin_dir
+#
+# Composer bin_dir to hold composer packages binaries
+composer_bin_dir: '{{ composer_level }}/bin'
 
 
 # .. envvar:: composer_url
@@ -59,7 +59,7 @@ __composer_url_path: '{{
 composer_url: 'https://getcomposer.org/{{ __composer_url_path }}'
 
 
-# .. envvar:: composer_system_packages
+# .. envvar:: composer_packages
 #
-# Composer packages to install system-wide
-composer_system_packages: []
+# Composer packages to install globally (to the user)
+composer_packages: []

@@ -1,0 +1,42 @@
+---
+# tasks file for debops.composer
+
+- name: Create composer group
+  group:
+    name: '{{ composer_group }}'
+    system: True
+    state: 'present'
+
+- name: Create composer user
+  user:
+    name: '{{ composer_user }}'
+    group: '{{ composer_group }}'
+    home: '{{ composer_home }}'
+    shell: '{{ composer_shell }}'
+    system: True
+    state: 'present'
+
+- name: Create composer bin-dir
+  file:
+    path: '{{ composer_home }}/bin'
+    state: 'directory'
+    mode: '0755'
+  sudo_user: '{{ composer_user }}'
+
+- name: Set up user composer bin-dir
+  shell: >
+    {{ composer_bin_path }} global config
+    bin-dir {{ composer_home }}/bin
+  register: 'composer_bin_dir'
+  changed_when: 'composer_bin_dir.rc != 0'
+  sudo_user: '{{ composer_user }}'
+
+- name: Install user composer packages
+  shell: >
+    {{ composer_bin_path }} global require
+    {{ item.name }}:{{ item.release|default("@stable") }}
+    --no-progress
+  args:
+    creates: '{{ composer_home }}/.composer/vendor/{{ item.name }}'
+  with_items: composer_packages
+  sudo_user: '{{ composer_user }}'
